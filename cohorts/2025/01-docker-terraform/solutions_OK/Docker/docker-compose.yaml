@@ -1,5 +1,6 @@
 services:
   pgdatabase:
+    container_name: postgres
     image: postgres:13
     environment:
       - POSTGRES_USER=root
@@ -12,6 +13,7 @@ services:
     networks:
       - extnw1
   pgadmin:
+    container_name: pgadmin
     image: dpage/pgadmin4
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
@@ -20,7 +22,6 @@ services:
       - 8081:80
     networks:
       - extnw1
-
 
 networks:
   extnw1:
