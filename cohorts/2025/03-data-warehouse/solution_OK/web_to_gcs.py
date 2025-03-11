@@ -14,7 +14,8 @@ Pre-reqs:
 # services = ['fhv','green','yellow']
 init_url = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/'
 # switch out the bucketname
-BUCKET = os.environ.get("GCP_GCS_BUCKET", "ny-taxi-453114-manual")
+BUCKET = os.environ.get("GCP_GCS_BUCKET", "ny-taxi-453114-fvh")
+prefix = 'raw'
 
 GOOGLE_APPLICATION_CREDENTIALS = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", None)
 if not GOOGLE_APPLICATION_CREDENTIALS:
@@ -49,7 +50,7 @@ def try_read_csv(file_name):
     return df
 
 def web_to_gcs(year, service):
-    for i in range(11, 12):
+    for i in range(2, 12):
         
         # sets the month part of the file_name string
         month = '0'+str(i+1)
@@ -73,8 +74,8 @@ def web_to_gcs(year, service):
         os.remove(file_name)
 
         # upload it to gcs 
-        upload_to_gcs(BUCKET, f"{service}/{file_name}", file_name_pq)
-        print(f"Uploaded to GCS: {service}")
+        upload_to_gcs(BUCKET, f"{prefix}/{file_name_pq}", file_name_pq)
+        print(f"Uploaded to GCS: gs://{BUCKET}/{prefix}")
         os.remove(file_name_pq)
 
 
@@ -82,6 +83,6 @@ def web_to_gcs(year, service):
 # web_to_gcs('2020', 'green')
 # web_to_gcs('2019', 'yellow')
 # web_to_gcs('2020', 'yellow')
-# web_to_gcs('2019', 'fhv')
-web_to_gcs('2020', 'fhv')
+web_to_gcs('2019', 'fhv')
+# web_to_gcs('2020', 'fhv')
 
